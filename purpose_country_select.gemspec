@@ -6,7 +6,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["btguthrie@gmail.com"]
   gem.description   = %q{Provides country_select functionality specifically geared to Purpose's needs}
   gem.summary       = %q{Specifically: different lists for donations and signups; customize the list of countries}
-  gem.homepage      = "None"
+  gem.homepage      = "https://github.com/PurposeTW/purpose_country_select"
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }

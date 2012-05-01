@@ -16,8 +16,8 @@ module PurposeCountrySelect
   class << self
     def init
       CSV_HEADERS.each do |header|
-        PurposeCountrySelect::COUNTRIES[header] = ['']
-        PurposeCountrySelect::DONATION_COUNTRIES[header] = ['']
+        PurposeCountrySelect::COUNTRIES[header] = []
+        PurposeCountrySelect::DONATION_COUNTRIES[header] = []
       end
 
       build_countries_hash_from_csv('countries.csv', PurposeCountrySelect::COUNTRIES, CSV_HEADERS)

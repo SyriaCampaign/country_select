@@ -25,10 +25,16 @@ describe "CountrySelect Initializer" do
   end
 
   it "should add the priority countries to the top of the options list" do
-    CountrySelectHelper.new.country_select("foo", "country", :priority_countries => ['US', 'BR']).should have_tag("select") do
-      with_tag 'option:nth-child(1)', "US"
-      with_tag 'option:nth-child(2)', "BR"
+    CountrySelectHelper.new.country_select("foo", "country", :priority_countries => ['us', 'br']).should have_tag("select") do
+      with_tag 'option:nth-child(1)', "us"
+      with_tag 'option:nth-child(2)', "br"
       with_tag 'option:nth-child(3)', PurposeCountrySelect::SEPARATOR_STRING
+    end
+  end
+
+  it "should select the first option when no selected value is specified" do
+    CountrySelectHelper.new.country_select("foo", "country", :priority_countries => ['us', 'br']).should have_tag("select") do
+      with_tag 'option[selected]', "us"
     end
   end
 end

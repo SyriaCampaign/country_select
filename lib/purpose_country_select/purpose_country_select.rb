@@ -17,24 +17,39 @@ module ActionView
       def country_options_for_select(selected = nil, options = nil)
         options ||= {}
 
-        [ optional_placeholder(options),
+        selected = if selected.present?
+          selected
+        elsif options[:placeholder]
+          :placeholder
+        elsif options[:priority_countries]
+          :first_country
+        else nil end
+
+        [ optional_placeholder(options, selected),
           optional_priority_countries_list(options, selected),
           full_countries_list(options, selected)
         ].join.html_safe
       end
 
-      def optional_placeholder(options)
+      private
+
+      def optional_placeholder(options, selected)
         return '' unless options[:placeholder]
-        %{<option value="" disabled>#{options[:placeholder]}</option>}
+
+        html_options = { :disabled => '' }
+        html_options[:selected] = '' if selected == :placeholder
+
+        options_for_select [[ options[:placeholder], '' ]], html_options
       end
 
       def optional_priority_countries_list(options, selected)
         return '' unless options[:priority_countries]
 
-        priority_countries = options_for_select(options[:priority_countries], selected)
         separator_string = options[:separator] || PurposeCountrySelect::SEPARATOR_STRING
-        separator_option = %{<option value="" disabled>#{separator_string}</option>}
-        [ priority_countries, separator_option ].join
+        selected = ( selected == :first_country ) ? options[:priority_countries].first : selected
+        full_list = options[:priority_countries] + [[ separator_string, '' ]]
+
+        options_for_select full_list, :disabled => '', :selected => selected
       end
 
       def full_countries_list(options, selected)

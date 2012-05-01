@@ -4,7 +4,6 @@ module ActionView
   module Helpers
     module FormOptionsHelper
 
-
       # Return select and option tags for the given object and method, using country_options_for_select to generate the list of option tags.
       def country_select(object, method, options = {}, html_options = {})
         InstanceTag.new(object, method, self, options.delete(:object)).to_country_select_tag(options, html_options)
@@ -16,32 +15,35 @@ module ActionView
       #
       # NOTE: Only the option tags are returned, you have to wrap this call in a regular HTML select tag.
       def country_options_for_select(selected = nil, options = nil)
-        country_options = ""
         options ||= {}
 
-        if options[:placeholder]
-          country_options += %{<option value="" disabled="">#{options[:placeholder]}</option>}
-        end
-
-        if options[:priority_countries]
-          separator_string = options[:separator] || PurposeCountrySelect::SEPARATOR_STRING
-          country_options += options_for_select(options[:priority_countries], selected)
-          country_options += %{<option value="" disabled="">#{separator_string}</option>}
-          # prevents selected from being included twice in the HTML which causes
-          # some browsers to select the second selected option (not priority)
-          # which makes it harder to select an alternative priority country
-          selected = nil if options[:priority_countries].include?(selected)
-        end
-
-        return_country_options(countries(options), country_options, selected).html_safe
+        [ optional_placeholder(options),
+          optional_priority_countries_list(options, selected),
+          full_countries_list(options, selected)
+        ].join.html_safe
       end
 
-      def countries(options={})
-        options[:donation] ? PurposeCountrySelect::DONATION_COUNTRIES : PurposeCountrySelect::COUNTRIES
+      def optional_placeholder(options)
+        return '' unless options[:placeholder]
+        %{<option value="" disabled>#{options[:placeholder]}</option>}
       end
 
-      def return_country_options(countries, country_options, selected)
-        return country_options + options_for_select(countries[I18n.locale.to_s], selected)
+      def optional_priority_countries_list(options, selected)
+        return '' unless options[:priority_countries]
+
+        priority_countries = options_for_select(options[:priority_countries], selected)
+        separator_string = options[:separator] || PurposeCountrySelect::SEPARATOR_STRING
+        separator_option = %{<option value="" disabled>#{separator_string}</option>}
+        [ priority_countries, separator_option ].join
+      end
+
+      def full_countries_list(options, selected)
+        full_countries_list_for_locale = countries(options[:donation])[I18n.locale.to_s]
+        options_for_select(full_countries_list_for_locale, selected)
+      end
+
+      def countries(is_donation)
+        is_donation ? PurposeCountrySelect::DONATION_COUNTRIES : PurposeCountrySelect::COUNTRIES
       end
     end
 

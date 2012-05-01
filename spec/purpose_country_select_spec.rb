@@ -17,4 +17,18 @@ describe "CountrySelect Initializer" do
       with_tag 'option[value="br"]', "Brazil"
     end
   end
+
+  it "should render a placeholder if one is given" do
+    CountrySelectHelper.new.country_select("foo", "country", :placeholder => "Select Country").should have_tag("select") do
+      with_tag 'option[disabled]', "Select Country"
+    end
+  end
+
+  it "should add the priority countries to the top of the options list" do
+    CountrySelectHelper.new.country_select("foo", "country", :priority_countries => ['US', 'BR']).should have_tag("select") do
+      with_tag 'option:nth-child(1)', "US"
+      with_tag 'option:nth-child(2)', "BR"
+      with_tag 'option:nth-child(3)', PurposeCountrySelect::SEPARATOR_STRING
+    end
+  end
 end

@@ -11,6 +11,7 @@ module PurposeCountrySelect
   LANGUAGES = CSV_HEADERS - ['iso']
 
   DATA_DIR = Pathname.new(__FILE__).join("..", "..", "data")
+  SEPARATOR_STRING = "-------------"
 
   class << self
     def init

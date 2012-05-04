@@ -8,6 +8,7 @@ module PurposeCountrySelect
   DONATION_COUNTRIES = {}
 
   CSV_HEADERS = ['iso','en','es','pt','fr']
+  DEFAULT_LOCALE = 'en'
   LANGUAGES = CSV_HEADERS - ['iso']
 
   DATA_DIR = Pathname.new(__FILE__).join("..", "..", "data")

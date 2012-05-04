@@ -18,6 +18,20 @@ describe "CountrySelect Initializer" do
     end
   end
 
+  it "should render the select html tag containing all languages for a specific locale" do
+    I18n.locale = 'fr'
+    CountrySelectHelper.new.country_select("foo", "country").should have_tag('select[name="foo[country]"]') do
+      with_tag 'option[value="ag"]', "Antigua et Barbude"
+    end
+  end
+
+  it "should fallback to English when the given locale is not mapped" do
+    I18n.locale = 'vi'
+    CountrySelectHelper.new.country_select("foo", "country").should have_tag('select[name="foo[country]"]') do
+      with_tag 'option[value="ag"]', "Antigua and Barbuda"
+    end
+  end
+
   it "should render a placeholder if one is given" do
     CountrySelectHelper.new.country_select("foo", "country", :placeholder => "Select Country").should have_tag("select") do
       with_tag 'option[disabled]', "Select Country"

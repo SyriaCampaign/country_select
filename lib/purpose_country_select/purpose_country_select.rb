@@ -53,12 +53,13 @@ module ActionView
       end
 
       def full_countries_list(options, selected)
-        full_countries_list_for_locale = countries(options[:donation])[I18n.locale.to_s]
+        full_countries_list_for_locale = countries_for_locale(options[:donation], I18n.locale.to_s)
         options_for_select(full_countries_list_for_locale, selected)
       end
 
-      def countries(is_donation)
-        is_donation ? PurposeCountrySelect::DONATION_COUNTRIES : PurposeCountrySelect::COUNTRIES
+      def countries_for_locale(is_donation, locale)
+        countries = is_donation ? PurposeCountrySelect::DONATION_COUNTRIES : PurposeCountrySelect::COUNTRIES
+        countries[locale] || countries[PurposeCountrySelect::DEFAULT_LOCALE]
       end
     end
 

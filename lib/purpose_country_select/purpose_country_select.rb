@@ -3,9 +3,10 @@ require 'csv'
 module CountryHelper
   def country_name(country_iso, locale)
     countries = PurposeCountrySelect::COUNTRIES[locale.to_s] || PurposeCountrySelect::COUNTRIES[PurposeCountrySelect::DEFAULT_LOCALE]
-    countries.find do |country_iso_pair|
-      country_iso_pair.last == country_iso
-    end.first
+    country_info = countries.find do |country_iso_pair|
+      country_iso_pair.last == country_iso.to_s
+    end
+    country_info ? country_info.first : country_iso
   end
 end
 

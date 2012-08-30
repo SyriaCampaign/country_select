@@ -1,4 +1,14 @@
 require 'csv'
+
+module CountryHelper
+  def country_name(country_iso, locale)
+    countries = PurposeCountrySelect::COUNTRIES[locale.to_s] || PurposeCountrySelect::COUNTRIES[PurposeCountrySelect::DEFAULT_LOCALE]
+    countries.find do |country_iso_pair|
+      country_iso_pair.last == country_iso
+    end.first
+  end
+end
+
 # CountrySelect
 module ActionView
   module Helpers
@@ -29,12 +39,6 @@ module ActionView
           optional_priority_countries_list(options, selected),
           full_countries_list(options, selected)
         ].join.html_safe
-      end
-
-      def country_name(country_iso, locale)
-        PurposeCountrySelect::COUNTRIES[locale].find do |country_iso_pair|
-          country_iso_pair.last == country_iso
-        end.first
       end
 
       private

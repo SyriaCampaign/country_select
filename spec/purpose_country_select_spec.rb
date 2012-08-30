@@ -51,10 +51,4 @@ describe "CountrySelect Initializer" do
       with_tag 'option[selected]', "us"
     end
   end
-
-  it "should provide country names in specified locales" do
-    CountrySelectHelper.new.country_name("us", "en").should == "United States"
-    CountrySelectHelper.new.country_name("us", "pt").should == "EUA"
-    CountrySelectHelper.new.country_name("us", "es").should == "Estados Unidos"
-  end
 end

@@ -31,6 +31,12 @@ module ActionView
         ].join.html_safe
       end
 
+      def country_name(country_iso, locale)
+        PurposeCountrySelect::COUNTRIES[locale].find do |country_iso_pair|
+          country_iso_pair.last == country_iso
+        end.first
+      end
+
       private
 
       def optional_placeholder(options, selected)

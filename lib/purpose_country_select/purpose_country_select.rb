@@ -8,6 +8,11 @@ module CountryHelper
     end
     country_info ? country_info.first : country_iso
   end
+
+  def is_non_post_code_country(country_iso)
+    return false unless country_iso
+    PurposeCountrySelect::NON_POST_CODE_COUNTRIES.include?(country_iso.to_s.downcase)
+  end
 end
 
 # CountrySelect
@@ -70,7 +75,8 @@ module ActionView
 
       def countries_for_locale(is_donation, locale)
         countries = is_donation ? PurposeCountrySelect::DONATION_COUNTRIES : PurposeCountrySelect::COUNTRIES
-        countries[locale] || countries[PurposeCountrySelect::DEFAULT_LOCALE]
+        by_locale = countries[locale] || countries[PurposeCountrySelect::DEFAULT_LOCALE]
+        by_locale.map {|country| [country.first, country.last, {'data-uses-postcode' => country[1]}]}
       end
     end
 

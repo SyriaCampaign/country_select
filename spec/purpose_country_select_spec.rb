@@ -41,6 +41,13 @@ describe "CountrySelect Initializer" do
     end
   end
 
+  it 'should sort countries by local name' do
+    I18n.locale = 'pt'
+    CountrySelectHelper.new.country_select("foo", "country").should have_tag("select") do
+      with_tag "option:contains('Cabo Verde') + option", "Camarões"
+    end
+  end
+
   it "should add the priority countries to the top of the options list" do
     CountrySelectHelper.new.country_select("foo", "country", :priority_countries => ['us', 'br']).should have_tag("select") do
       with_tag 'option:nth-child(1)', "us"

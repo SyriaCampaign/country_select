@@ -24,7 +24,7 @@ module ActionView
       def country_select(object, method, options = {}, html_options = {})
         InstanceTag.new(object, method, self, options.delete(:object)).to_country_select_tag(options, html_options)
       end
-      
+
       # Returns a string of option tags for pretty much any country in the world. Supply a country name as +selected+ to
       # have it marked as the selected option tag. You can also supply an array of countries as +priority_countries+, so
       # that they will be listed above the rest of the (long) list.
@@ -76,7 +76,7 @@ module ActionView
       def countries_for_locale(is_donation, locale)
         countries = is_donation ? PurposeCountrySelect::DONATION_COUNTRIES : PurposeCountrySelect::COUNTRIES
         by_locale = countries[locale] || countries[PurposeCountrySelect::DEFAULT_LOCALE]
-        by_locale.map {|country| [country.first, country.last, {'data-uses-postcode' => country[1]}]}
+        by_locale.map {|country| [country.first, country.last, {'data-uses-postcode' => country[1]}]}.sort_by(&:first)
       end
     end
 

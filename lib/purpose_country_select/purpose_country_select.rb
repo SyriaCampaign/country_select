@@ -76,7 +76,7 @@ module ActionView
       def countries_for_locale(is_donation, locale)
         countries = is_donation ? PurposeCountrySelect::DONATION_COUNTRIES : PurposeCountrySelect::COUNTRIES
         by_locale = countries[locale] || countries[PurposeCountrySelect::DEFAULT_LOCALE]
-        by_locale.map {|country| [country.first, country.last, {'data-uses-postcode' => country[1]}]}.sort_by(&:first)
+        by_locale.map {|country| [country.first, country.last, {'data-uses-postcode' => country[1]}]}.sort_alphabetical_by(&:first)
       end
     end
 

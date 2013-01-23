@@ -45,6 +45,7 @@ describe "CountrySelect Initializer" do
     I18n.locale = 'pt'
     CountrySelectHelper.new.country_select("foo", "country").should have_tag("select") do
       with_tag "option:contains('Cabo Verde') + option", "Camarões"
+      with_tag "option:contains('Áustria') + option", "Azerbaijão"
     end
   end
 

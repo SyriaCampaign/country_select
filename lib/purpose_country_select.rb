@@ -1,4 +1,5 @@
 require 'action_view'
+require 'sort_alphabetical'
 
 require 'purpose_country_select/purpose_country_select'
 require 'purpose_country_select/version'

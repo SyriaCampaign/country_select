@@ -22,7 +22,7 @@ module ActionView
 
       # Return select and option tags for the given object and method, using country_options_for_select to generate the list of option tags.
       def country_select(object, method, options = {}, html_options = {})
-        InstanceTag.new(object, method, self, options.delete(:object)).to_country_select_tag(options, html_options)
+        select_tag("#{object}[#{method}]", country_options_for_select(nil, options), html_options.stringify_keys)
       end
 
       # Returns a string of option tags for pretty much any country in the world. Supply a country name as +selected+ to
@@ -77,20 +77,6 @@ module ActionView
         countries = is_donation ? PurposeCountrySelect::DONATION_COUNTRIES : PurposeCountrySelect::COUNTRIES
         by_locale = countries[locale] || countries[PurposeCountrySelect::DEFAULT_LOCALE]
         by_locale.map {|country| [country.first, country.last, {'data-uses-postcode' => country[1]}]}.sort_alphabetical_by(&:first)
-      end
-    end
-
-    class InstanceTag
-      def to_country_select_tag(options, html_options)
-        html_options = html_options.stringify_keys
-        add_default_name_and_id(html_options)
-        value = value(object)
-        content_tag("select",
-          add_options(
-            country_options_for_select(value, options),
-            options, value
-          ), html_options
-        )
       end
     end
 
